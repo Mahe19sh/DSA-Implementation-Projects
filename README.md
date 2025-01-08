@@ -1,1 +1,1 @@
-**DSA-Implementation-Projects
+Data Structures and Algorithms - Implementations for all kinds of data structures and optimal algorithms for classical problems in computer science. Also can use as preparation guide to crack MAANG+ interviews and improve problem solving ability to tackle all kinds of problem solving patterns in software engineering domain.
