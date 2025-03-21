@@ -54,7 +54,57 @@ def dfs_iter(graph):
 
 graph_dijkstra = {} #Has many hashtables inside which stores node neighbors and their weights.
 costs = {} #stores nodes and their weights.
-parents = {} #
+parents = {} #stores each node and associated parent of the node.
+processed = [] #A list to store processed nodes to avoid revisit.
+
+def Dijkstras():
+    node = find_lowest_cost_node(costs)
+    while node:
+        cost = costs[node]
+        neighbors = graph[node]
+        for n in neighbors:
+            new_cost = cost + neighbors[n]
+            if costs[n] > new_cost:
+                costs[n] = new_cost
+                parents[n] = node
+        processed.append(node)
+        node = find_lowest_cost_node(costs)
+
+def find_lowest_cost_node(costs):
+    lowest_cost = float("inf")
+    lowest_cost_node = None
+    for node in costs:
+        cost = costs[node]
+        if cost < lowest_cost and node not in processed:
+            lowest_cost = cost
+            lowest_cost_node = node
+    return lowest_cost_node
+
+"""
+Limitations of Dijkstra:
+    1) Works only for DAG's(Direct Acyclic Graphs)
+    2) Cannot work for negitive weighted edges and cycles(Bellman-Ford).
+    3) Single source shortest path not works for all pairs.
+
+Drawbacks of above code version:
+    1) find_lowest_cost_node() does a linear search through all nodes → O(n) time. Over all iterations, it's O(n²) for dense graphs.
+    2) Checking if a node is in processed list is O(n) time. Using a set makes it O(1).
+    3) No Priority Queue/Heap: In real-world scenarios with large graphs, this will become very slow due to the repeated linear searches.
+    4) For reusability, it’s better to pass the graph and other params into the function.
+"""
+
+
+#Some example LeetCode problems where Dijkstras applicable.
+
+# 1) LeetCode_743 : Network Delay Time.
+"""
+    Problem Statement: You are given a network of n nodes, labeled from 1 to n. 
+    You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where ui is the source node, vi is the target node, and wi is the time it takes for a signal to travel from source to target.
+    We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal. If it is impossible for all the n nodes to receive the signal, return -1.
+"""
+
+
+
 
 
 
