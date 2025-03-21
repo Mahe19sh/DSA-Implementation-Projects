@@ -2,7 +2,9 @@
 #Usually represent graph with hash table where key is a vertex and values is a list of its neighbors.
 
 #Starting with BFS algorithm 
-import deque from collections # type: ignore
+from collections import defaultdict
+import deque from collectionsdefaultdict,  # type: ignore
+import heapq
 
 graph = {}
 visited = [] #list to ensure no duplicates allowed to explore again and again.
@@ -92,6 +94,20 @@ Drawbacks of above code version:
     3) No Priority Queue/Heap: In real-world scenarios with large graphs, this will become very slow due to the repeated linear searches.
     4) For reusability, it’s better to pass the graph and other params into the function.
 """
+#Real world Dijkstra code implementation.
+
+def Dijkstra(graph, start):
+    heap = [(0, start)]
+    distances = {node:float("inf") for node in graph}
+    distances[start] = 0
+    while heap:
+        curr_distance, node = heapq.heappop(heap)
+        for neighbor, weight in graph[node].items():
+            new_distance = curr_distance + weight
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heapq.heappush(heap, (new_distance, neighbor))
+    return distances
 
 
 #Some example LeetCode problems where Dijkstras applicable.
@@ -102,6 +118,29 @@ Drawbacks of above code version:
     You are also given times, a list of travel times as directed edges times[i] = (ui, vi, wi), where ui is the source node, vi is the target node, and wi is the time it takes for a signal to travel from source to target.
     We will send a signal from a given node k. Return the minimum time it takes for all the n nodes to receive the signal. If it is impossible for all the n nodes to receive the signal, return -1.
 """
+#Code Solution:
+
+def networkDelayTime(times,n,k) -> int:
+    graph = defaultdict(dict)
+    for u, v, w in times:
+        graph[u][v] = w       
+    heap = [(0,k)]
+    distances = {node:float("inf") for node in range(1, n+1)}
+    distances[k] = 0
+    while heap:
+        curr_dist, node = heapq.heappop(heap)
+        if curr_dist > distances[node]:
+            continue
+        for neighbor, distance in graph[node].items():
+            new_distance = distance + curr_dist
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heapq.heappush(heap, (new_distance, neighbor))
+    max_time = max(distances.values())
+    return max_time if max_time < float("inf") else -1
+
+
+        
 
 
 
